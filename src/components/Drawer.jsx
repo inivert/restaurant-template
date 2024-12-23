@@ -121,7 +121,7 @@ const Drawer = ({ isOpen, setIsOpen }) => {
                   href="https://www.doordash.com/store/cultura-mixta-family-restaurant-central-falls-28991678/?utm_source=mx_share"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ios-btn ios-btn-primary w-full flex items-center justify-center gap-2"
+                  className="ios-btn ios-btn-doordash w-full flex items-center justify-center gap-2"
                 >
                   Order Now on DoorDash
                 </a>

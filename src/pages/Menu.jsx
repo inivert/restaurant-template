@@ -33,7 +33,7 @@ const Menu = () => {
         <div className="container mx-auto">
           <div 
             ref={categoriesRef}
-            className="flex gap-2 overflow-x-auto scrollbar-hide mask-fade-edges py-3"
+            className="flex gap-2 overflow-x-auto scrollbar-hide py-3"
           >
             <div className="flex gap-2 mx-auto px-4">
               {categories.map(({ id, label }) => (

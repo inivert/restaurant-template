@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import MenuModal from './MenuModal';
 import { Star, Flame } from 'lucide-react';
@@ -20,26 +20,53 @@ const PopularityBadge = () => (
   </div>
 );
 
+const ImageWithBlur = ({ src, alt }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [imageSrc, setImageSrc] = useState(null);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      setImageSrc(src);
+      setIsLoading(false);
+    };
+  }, [src]);
+
+  return (
+    <div className="relative w-full h-full bg-gray-100 overflow-hidden">
+      {isLoading && (
+        <div className="absolute inset-0 animate-pulse bg-gray-200" />
+      )}
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt={alt}
+          className={`w-full h-full object-cover transition-opacity duration-500 
+            ${isLoading ? 'opacity-0' : 'opacity-100'} 
+            group-hover:scale-105`}
+          loading="lazy"
+        />
+      )}
+    </div>
+  );
+};
+
 const MenuCard = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
       <motion.div
-        layout
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
         className="ios-card group cursor-pointer"
         onClick={() => setIsModalOpen(true)}
       >
         <div className="relative aspect-[4/3] overflow-hidden rounded-t-[1.5rem]">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
-          />
+          <ImageWithBlur src={item.image} alt={item.name} />
           {item.isPopular && <PopularityBadge />}
         </div>
         <div className="p-4">

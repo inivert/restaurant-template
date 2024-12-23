@@ -24,6 +24,10 @@
     @apply bg-primary text-white hover:bg-primary/90 active:bg-primary/80;
   }
 
+  .ios-btn-doordash {
+    @apply bg-[#ff1d25] hover:bg-[#e61a21] text-white;
+  }
+
   .ios-card {
     @apply overflow-hidden rounded-[1.5rem] bg-white/95 shadow-[0_8px_24px_rgba(0,0,0,0.04)]
     ring-1 ring-gray-900/[0.03] transition-all duration-300
