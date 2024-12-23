@@ -21,11 +21,23 @@ const SpicyLevel = ({ level }) => {
   );
 };
 
+const SkeletonLoader = () => (
+  <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer" 
+      style={{ 
+        backgroundSize: '200% 100%',
+        animation: 'shimmer 1.5s infinite'
+      }} 
+    />
+  </div>
+);
+
 const ImageWithBlur = ({ src, alt }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState(null);
 
   useEffect(() => {
+    setIsLoading(true);
     const img = new Image();
     img.src = src;
     img.onload = () => {
@@ -36,9 +48,7 @@ const ImageWithBlur = ({ src, alt }) => {
 
   return (
     <div className="relative w-full h-full bg-gray-100 overflow-hidden">
-      {isLoading && (
-        <div className="absolute inset-0 animate-pulse bg-gray-200" />
-      )}
+      {isLoading && <SkeletonLoader />}
       {imageSrc && (
         <img
           src={imageSrc}
@@ -54,84 +64,109 @@ const ImageWithBlur = ({ src, alt }) => {
 const MenuModal = ({ isOpen, onClose, item }) => {
   if (!item) return null;
 
+  const overlayVariants = {
+    closed: { opacity: 0 },
+    open: { opacity: 1 }
+  };
+
+  const modalVariants = {
+    closed: { y: "100%" },
+    open: { y: 0 }
+  };
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <Dialog
           open={isOpen}
           onClose={onClose}
           className="relative z-50"
         >
-          <div className="fixed inset-0 bg-black/20 backdrop-blur-[2px]" aria-hidden="true" />
+          <motion.div
+            variants={overlayVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/20 backdrop-blur-[2px]"
+            aria-hidden="true"
+          />
           
-          <div className="fixed inset-0 flex items-center justify-center p-4">
-            <Dialog.Panel className="w-full max-w-lg">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.2 }}
-                className="ios-card w-full overflow-hidden relative bg-white/95"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <ImageWithBlur src={item.image} alt={item.name} />
-                  {item.isPopular && <PopularityBadge />}
-                </div>
-
-                <div className="p-6">
-                  <div className="flex justify-between items-start gap-4 mb-4">
-                    <Dialog.Title className="text-2xl font-bold">
-                      {item.name}
-                    </Dialog.Title>
-                    <span className="text-xl font-bold text-primary">
-                      ${item.price}
-                    </span>
+          <div className="fixed inset-0 overflow-hidden">
+            <div className="flex min-h-full items-end justify-center p-0">
+              <Dialog.Panel className="w-full max-w-lg">
+                <motion.div
+                  variants={modalVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  transition={{
+                    type: "tween",
+                    duration: 0.12,
+                    ease: [0.98, 0.25, 0, 1]
+                  }}
+                  className="ios-card w-full overflow-hidden relative bg-white/95 rounded-t-[2rem]"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden sm:rounded-t-[2rem]">
+                    <ImageWithBlur src={item.image} alt={item.name} />
+                    {item.isPopular && <PopularityBadge />}
                   </div>
 
-                  {item.spicyLevel > 0 && (
-                    <SpicyLevel level={item.spicyLevel} />
-                  )}
-
-                  <p className="text-gray-600 mb-4">
-                    {item.description}
-                  </p>
-
-                  {item.ingredients && (
-                    <div className="space-y-2">
-                      <h4 className="font-medium">Ingredients:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {item.ingredients.map((ingredient, index) => (
-                          <span
-                            key={index}
-                            className="px-3 py-1 rounded-full text-sm 
-                              bg-gray-100 text-gray-700"
-                          >
-                            {ingredient}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {item.dietary && (
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                      <span className="text-sm text-gray-500">
-                        {item.dietary}
+                  <div className="p-6">
+                    <div className="flex justify-between items-start gap-4 mb-4">
+                      <Dialog.Title className="text-2xl font-bold">
+                        {item.name}
+                      </Dialog.Title>
+                      <span className="text-xl font-bold text-primary">
+                        ${item.price}
                       </span>
                     </div>
-                  )}
 
-                  <div className="mt-6 pt-6 border-t border-gray-100">
-                    <button
-                      onClick={onClose}
-                      className="w-full ios-btn ios-btn-primary"
-                    >
-                      Close
-                    </button>
+                    {item.spicyLevel > 0 && (
+                      <SpicyLevel level={item.spicyLevel} />
+                    )}
+
+                    <p className="text-gray-600 mb-4">
+                      {item.description}
+                    </p>
+
+                    {item.ingredients && (
+                      <div className="space-y-2">
+                        <h4 className="font-medium">Ingredients:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {item.ingredients.map((ingredient, index) => (
+                            <span
+                              key={index}
+                              className="px-3 py-1 rounded-full text-sm 
+                                bg-gray-100 text-gray-700"
+                            >
+                              {ingredient}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {item.dietary && (
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <span className="text-sm text-gray-500">
+                          {item.dietary}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="mt-6 pt-6 border-t border-gray-100">
+                      <button
+                        onClick={onClose}
+                        className="w-full ios-btn ios-btn-primary"
+                      >
+                        Close
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            </Dialog.Panel>
+                </motion.div>
+              </Dialog.Panel>
+            </div>
           </div>
         </Dialog>
       )}
@@ -139,4 +174,4 @@ const MenuModal = ({ isOpen, onClose, item }) => {
   );
 };
 
-export default MenuModal; 
+export default MenuModal;

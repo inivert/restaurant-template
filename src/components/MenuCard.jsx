@@ -20,11 +20,23 @@ const PopularityBadge = () => (
   </div>
 );
 
+const SkeletonLoader = () => (
+  <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer" 
+      style={{ 
+        backgroundSize: '200% 100%',
+        animation: 'shimmer 1.5s infinite'
+      }} 
+    />
+  </div>
+);
+
 const ImageWithBlur = ({ src, alt }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState(null);
 
   useEffect(() => {
+    setIsLoading(true);
     const img = new Image();
     img.src = src;
     img.onload = () => {
@@ -35,14 +47,12 @@ const ImageWithBlur = ({ src, alt }) => {
 
   return (
     <div className="relative w-full h-full bg-gray-100 overflow-hidden">
-      {isLoading && (
-        <div className="absolute inset-0 animate-pulse bg-gray-200" />
-      )}
+      {isLoading && <SkeletonLoader />}
       {imageSrc && (
         <img
           src={imageSrc}
           alt={alt}
-          className={`w-full h-full object-cover transition-opacity duration-500 
+          className={`w-full h-full object-cover transition-opacity duration-300 
             ${isLoading ? 'opacity-0' : 'opacity-100'} 
             group-hover:scale-105`}
           loading="lazy"
