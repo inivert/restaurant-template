@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Navbar from './components/Navbar';
 import Menu from './pages/Menu';
 import About from './pages/About';
@@ -16,6 +18,8 @@ const App = () => {
           <Route path="/location" element={<Location />} />
           <Route path="*" element={<Navigate to="/menu" replace />} />
         </Routes>
+        <Analytics />
+        <SpeedInsights />
       </div>
     </BrowserRouter>
   );
