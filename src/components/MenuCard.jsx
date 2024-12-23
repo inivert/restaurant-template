@@ -74,8 +74,9 @@ const MenuCard = ({ item }) => {
         <div className="relative aspect-[4/3] overflow-hidden rounded-t-[1.5rem]">
           <ImageWithBlur src={item.image} alt={item.name} />
           {item.isPopular && <PopularityBadge />}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/60 to-transparent" />
         </div>
-        <div className="p-4">
+        <div className="p-4 -mt-6 relative bg-white">
           <div className="flex items-start justify-between gap-4 mb-1">
             <h3 className="font-semibold tracking-tight">{item.name}</h3>
             <p className="font-semibold text-primary whitespace-nowrap">

@@ -102,17 +102,19 @@ const MenuModal = ({ isOpen, onClose, item }) => {
                   exit="closed"
                   transition={{
                     type: "tween",
-                    duration: 0.12,
-                    ease: [0.98, 0.25, 0, 1]
+                    duration: 0.28,
+                    ease: [0.98, 0.15, 0, 1]
                   }}
-                  className="ios-card w-full overflow-hidden relative bg-white/95 rounded-t-[2rem]"
+                  className="w-full overflow-hidden relative bg-white/95 rounded-t-[3rem] shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.15)] ring-1 ring-black/5"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden sm:rounded-t-[2rem]">
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <div className="absolute inset-0 shadow-inner" />
                     <ImageWithBlur src={item.image} alt={item.name} />
                     {item.isPopular && <PopularityBadge />}
+                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white/95 via-white/50 to-transparent" />
                   </div>
 
-                  <div className="p-6">
+                  <div className="p-8 -mt-8 relative">
                     <div className="flex justify-between items-start gap-4 mb-4">
                       <Dialog.Title className="text-2xl font-bold">
                         {item.name}
