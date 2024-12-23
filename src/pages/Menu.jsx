@@ -27,6 +27,42 @@ const Menu = () => {
     }
   }, [activeCategory]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+        ease: [0.23, 1, 0.32, 1]
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen pb-safe-bottom pt-[4.5rem]">
       <div className="nav-blur sticky top-[3.5rem] z-20">
@@ -73,17 +109,16 @@ const Menu = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ 
-              duration: 0.3,
-              ease: [0.23, 1, 0.32, 1]
-            }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
           >
             {menuData[activeCategory]?.map((item) => (
-              <MenuCard key={item.id} item={item} />
+              <motion.div key={item.id} variants={itemVariants}>
+                <MenuCard item={item} />
+              </motion.div>
             ))}
           </motion.div>
         </AnimatePresence>
