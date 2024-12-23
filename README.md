@@ -23,7 +23,7 @@ A modern, responsive restaurant website built with React, Tailwind CSS, and Fram
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/restaurant-website.git
+git clone https://github.com/inivert/restaurant-template.git
 ```
 
 2. Install dependencies:
