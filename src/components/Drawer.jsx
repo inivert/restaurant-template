@@ -21,40 +21,24 @@ const Drawer = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+          <div 
+            className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-40"
             onClick={handleClose}
-            className="fixed inset-0 bg-black/20 z-40"
           />
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ 
-              type: "spring", 
-              damping: 30,
-              stiffness: 250,
-              mass: 0.8,
-              restDelta: 0.01
-            }}
+            transition={{ duration: 0.2 }}
             className="fixed right-0 top-0 bottom-0 w-full max-w-sm 
               bg-white/95 z-50 
               rounded-l-[2.5rem] overflow-hidden
-              shadow-[-8px_0_32px_rgba(0,0,0,0.08)]
-              will-change-transform"
+              shadow-[-8px_0_32px_rgba(0,0,0,0.08)]"
           >
-            <motion.div 
-              className="flex flex-col h-full"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2, delay: 0.1 }}
-            >
+            <div className="flex flex-col h-full">
               <div className="flex items-center justify-between p-6">
                 <h2 className="text-2xl font-bold tracking-tight">Menu</h2>
                 <button
@@ -126,7 +110,7 @@ const Drawer = ({ isOpen, setIsOpen }) => {
                   Order Now on DoorDash
                 </a>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </>
       )}

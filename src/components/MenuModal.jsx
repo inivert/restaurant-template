@@ -43,7 +43,7 @@ const ImageWithBlur = ({ src, alt }) => {
         <img
           src={imageSrc}
           alt={alt}
-          className={`w-full h-full object-cover transition-opacity duration-500 
+          className={`w-full h-full object-cover transition-opacity duration-300 
             ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         />
       )}
@@ -62,25 +62,15 @@ const MenuModal = ({ isOpen, onClose, item }) => {
           onClose={onClose}
           className="relative z-50"
         >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-[2px]"
-            aria-hidden="true"
-          />
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-[2px]" aria-hidden="true" />
           
           <div className="fixed inset-0 flex items-center justify-center p-4">
             <Dialog.Panel className="w-full max-w-lg">
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                transition={{ 
-                  duration: 0.3,
-                  ease: [0.23, 1, 0.32, 1]
-                }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.2 }}
                 className="ios-card w-full overflow-hidden relative bg-white/95"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -88,13 +78,7 @@ const MenuModal = ({ isOpen, onClose, item }) => {
                   {item.isPopular && <PopularityBadge />}
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, delay: 0.1 }}
-                  className="p-6"
-                >
+                <div className="p-6">
                   <div className="flex justify-between items-start gap-4 mb-4">
                     <Dialog.Title className="text-2xl font-bold">
                       {item.name}
@@ -145,7 +129,7 @@ const MenuModal = ({ isOpen, onClose, item }) => {
                       Close
                     </button>
                   </div>
-                </motion.div>
+                </div>
               </motion.div>
             </Dialog.Panel>
           </div>
