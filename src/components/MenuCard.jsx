@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import MenuModal from './MenuModal';
-import { Star, Flame } from 'lucide-react';
+import { Star, Flame, Search } from 'lucide-react';
 
 const SpicyLevel = ({ level }) => {
   if (!level) return null;
@@ -18,6 +18,18 @@ const PopularityBadge = () => (
   <div className="absolute top-3 right-3 flex items-center gap-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-md">
     <Star className="w-3.5 h-3.5 fill-yellow-400 stroke-yellow-400" />
   </div>
+);
+
+const InteractionHint = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="absolute top-2 left-2 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-2.5 py-1.5 rounded-full shadow-sm text-xs font-medium text-gray-600"
+  >
+    <Search className="w-3.5 h-3.5" />
+    <span>Tap to view more</span>
+  </motion.div>
 );
 
 const SkeletonLoader = () => (
@@ -52,7 +64,7 @@ const ImageWithBlur = ({ src, alt }) => {
         <img
           src={imageSrc}
           alt={alt}
-          className={`w-full h-full object-cover transition-opacity duration-300 
+          className={`w-full h-full object-cover transition-all duration-300 
             ${isLoading ? 'opacity-0' : 'opacity-100'} 
             group-hover:scale-105`}
           loading="lazy"
@@ -64,16 +76,33 @@ const ImageWithBlur = ({ src, alt }) => {
 
 const MenuCard = ({ item }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+
+  // Show hint after a delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHint(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
-      <div
-        className="ios-card group cursor-pointer"
+      <motion.div
+        className="ios-card group cursor-pointer relative"
         onClick={() => setIsModalOpen(true)}
+        onHoverStart={() => setShowHint(false)}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ type: "spring", stiffness: 300, damping: 15 }}
       >
         <div className="relative aspect-[4/3] overflow-hidden rounded-t-[1.5rem]">
           <ImageWithBlur src={item.image} alt={item.name} />
           {item.isPopular && <PopularityBadge />}
+          <AnimatePresence>
+            {showHint && <InteractionHint />}
+          </AnimatePresence>
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/60 to-transparent" />
         </div>
         <div className="p-4 -mt-6 relative bg-white">
@@ -92,7 +121,7 @@ const MenuCard = ({ item }) => {
             <SpicyLevel level={item.spicyLevel} />
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <MenuModal
         isOpen={isModalOpen}

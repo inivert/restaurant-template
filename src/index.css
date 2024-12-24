@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add support for forced colors mode */
+@media (forced-colors: active) {
+  /* Add high contrast support */
+  :root {
+    forced-color-adjust: auto;
+  }
+
+  /* Ensure buttons and interactive elements have proper contrast */
+  button, 
+  [role="button"],
+  a {
+    forced-color-adjust: none;
+  }
+
+  /* Ensure images maintain visibility */
+  img {
+    forced-color-adjust: none;
+  }
+}
+
 @layer base {
   :root {
     --color-primary: 235 23 0;
