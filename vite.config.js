@@ -15,11 +15,5 @@ export default defineConfig({
         manualChunks: undefined
       }
     }
-  },
-  base: './',
-  resolve: {
-    alias: {
-      '@': '/src'
-    }
   }
 }) 
