@@ -5,7 +5,7 @@
       "destination": "/$1"
     },
     {
-      "source": "/[^.]+",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
